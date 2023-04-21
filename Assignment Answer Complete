@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+int maximalNetworkRank(int n, int cables[][2], int numCables) {
+int connections[n];
+int graph[n][n];
+int i, j, a, b, rank, maxRank;
+for (i = 0; i < n; ++i) {
+connections[i] = 0;
+for (j = 0; j < n; ++j) {
+graph[i][j] = 0;
+}
+}
+for (i = 0; i < numCables; ++i) {
+a = cables[i][0], b = cables[i][1];
+graph[a][b] = graph[b][a] = 1;
+++connections[a], ++connections[b];
+}
+maxRank = 0;
+for (i = 0; i < n; ++i) {
+for (j = i + 1; j < n; ++j) {
+rank = connections[i] + connections[j] - graph[i][j];
+if (rank > maxRank) {
+maxRank = rank;
+}
+}
+}
+return maxRank;
+}
+
+int main() {
+int n = 4;
+int cables[][2] = {{0,1},{0,3},{1,2},{1,3}};
+int numCables = 4;
+int maxRank = maximalNetworkRank(n, cables, numCables);
+printf("Maximal network rank: %d\n", maxRank);
+return 0;
+}
+
